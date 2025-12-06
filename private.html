@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قريبين - جامعة حلوان الأهلية</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* خلفية خاصة بصفحة جامعة حلوان الأهلية */
+        body {
+            background-image: url('HNUbackground.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        /* طبقة شفافة فوق الخلفية */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- ========== صفحة جامعة حلوان الأهلية ========== -->
+    <div class="container form-container">
+
+        <!-- ========== رأس الصفحة مع اللوجو واسم الجامعة ========== -->
+        <header class="form-header">
+            <a href="index.html" class="back-btn">← العودة</a>
+            <div class="university-info">
+                <img src="new_logo.png" alt="جامعة حلوان الأهلية" class="university-logo" style="background-color: #fff;">
+                <h1>جامعة حلوان الأهلية</h1>
+            </div>
+            <h2 class="logo">قريبين</h2>
+            <p class="subtitle">شاركنا اقتراحاتك واستفساراتك</p>
+        </header>
+
+        <!-- ========== نموذج الاقتراحات والاستفسارات ========== -->
+        <main>
+            <form id="suggestionForm" class="suggestion-form">
+
+                <!-- ========== قسم البيانات الشخصية ========== -->
+                <div class="form-section">
+                    <h3 class="section-title">البيانات الشخصية</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="studentName">الاسم بالكامل <span class="required">*</span></label>
+                            <input type="text" id="studentName" name="studentName" required placeholder="أدخل اسمك الكامل">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="studentId">رقم الطالب <span class="required">*</span></label>
+                            <input type="text" id="studentId" name="studentId" required placeholder="أدخل رقمك الجامعي">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="faculty">الكلية <span class="required">*</span></label>
+                            <select id="faculty" name="faculty" required>
+                                <option value="">اختر الكلية</option>
+                                <option value="engineering">كلية الهندسة</option>
+                                <option value="business">كلية إدارة الأعمال</option>
+                                <option value="pharmacy">كلية الصيدلة</option>
+                                <option value="applied-arts">كلية الفنون التطبيقية</option>
+                                <option value="physical-therapy">كلية العلاج الطبيعي</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="year">الفرقة الدراسية <span class="required">*</span></label>
+                            <select id="year" name="year" required>
+                                <option value="">اختر الفرقة</option>
+                                <option value="1">الفرقة الأولى</option>
+                                <option value="2">الفرقة الثانية</option>
+                                <option value="3">الفرقة الثالثة</option>
+                                <option value="4">الفرقة الرابعة</option>
+                                <option value="5">الفرقة الخامسة</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">البريد الإلكتروني <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required placeholder="example@hnu.edu.eg">
+                        <small class="helper-text">سيتم إرسال الرد على هذا البريد الإلكتروني</small>
+                    </div>
+                </div>
+
+                <!-- ========== قسم نوع المشاركة ========== -->
+                <div class="form-section">
+                    <h3 class="section-title">نوع المشاركة</h3>
+
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="type" value="suggestion" checked>
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">اقتراح</span>
+                        </label>
+
+
+                        <label class="radio-label">
+                            <input type="radio" name="type" value="inquiry">
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">استفسار</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- ========== قسم المحتوى ========== -->
+                <div class="form-section">
+                    <h3 class="section-title">المحتوى</h3>
+
+                    <div class="form-group">
+                        <label for="title">العنوان <span class="required">*</span></label>
+                        <input type="text" id="title" name="title" required placeholder="عنوان مختصر للموضوع">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="content">التفاصيل <span class="required">*</span></label>
+                        <textarea id="content" name="content" required placeholder="اكتب تفاصيل اقتراحك أو استفسارك هنا...&#10;&#10;نرجو منك توضيح الموضوع بشكل مفصل لنتمكن من خدمتك بشكل أفضل"></textarea>
+                        <small class="helper-text character-count">0 / 2000 حرف</small>
+                    </div>
+                </div>
+
+                <!-- ========== أزرار الإرسال ========== -->
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">إرسال المشاركة</button>
+                    <button type="reset" class="reset-btn">مسح البيانات</button>
+                </div>
+
+            </form>
+        </main>
+
+        <!-- ========== تذييل الصفحة ========== -->
+        <footer>
+            <p>© 2025 قريبين - جميع الحقوق محفوظة</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

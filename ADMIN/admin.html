@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم الأدمن - قريبين</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body class="admin-body">
+    <!-- ========== صفحة الأدمن ========== -->
+    <div class="admin-container">
+
+        <!-- ========== رأس الصفحة ========== -->
+        <header class="admin-header">
+            <div class="header-content">
+                <div class="brand">
+                    <div class="university-logos">
+                        <img src="../helwan-gov.png" alt="جامعة حلوان الحكومية" title="جامعة حلوان الحكومية">
+                        <img src="../new_logo.png" alt="جامعة حلوان الأهلية" title="جامعة حلوان الأهلية">
+                        <img src="../helwan-tech.png" alt="جامعة حلوان التكنولوجية" title="جامعة حلوان التكنولوجية">
+                    </div>
+                    <h1 class="logo">قريبين</h1>
+                    <p class="admin-title">لوحة تحكم الإدارة</p>
+                </div>
+                <div class="header-actions">
+                    <button class="refresh-btn" onclick="loadSubmissions()">
+                        <span>🔄</span> تحديث
+                    </button>
+                    <a href="index.html" class="logout-btn">خروج</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== إحصائيات سريعة ========== -->
+        <section class="stats-section">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-info">
+                    <h3 id="totalCount">0</h3>
+                    <p>إجمالي المشاركات</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">💡</div>
+                <div class="stat-info">
+                    <h3 id="suggestionCount">0</h3>
+                    <p>الاقتراحات</p>
+                </div>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-icon">❓</div>
+                <div class="stat-info">
+                    <h3 id="inquiryCount">0</h3>
+                    <p>الاستفسارات</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== فلاتر البحث والتصفية ========== -->
+        <section class="filters-section">
+            <div class="filter-group">
+                <label for="universityFilter">الجامعة:</label>
+                <select id="universityFilter" onchange="filterSubmissions()">
+                    <option value="all">جميع الجامعات</option>
+                    <option value="government">جامعة حلوان الحكومية</option>
+                    <option value="private">جامعة حلوان الأهلية</option>
+                    <option value="tech">جامعة حلوان التكنولوجية</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="typeFilter">النوع:</label>
+                <select id="typeFilter" onchange="filterSubmissions()">
+                    <option value="all">جميع الأنواع</option>
+                    <option value="suggestion">اقتراح</option>
+                    <option value="inquiry">استفسار</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="statusFilter">الحالة:</label>
+                <select id="statusFilter" onchange="filterSubmissions()">
+                    <option value="all">جميع الحالات</option>
+                    <option value="pending">قيد المراجعة</option>
+                    <option value="in-progress">قيد المعالجة</option>
+                    <option value="resolved">تم الحل</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <input type="text" id="searchInput" placeholder="بحث بالاسم، البريد الإلكتروني، أو المحتوى..." onkeyup="filterSubmissions()">
+            </div>
+
+            <div class="filter-actions">
+                <button class="clear-filters-btn" onclick="clearFilters()">مسح الفلاتر</button>
+                <button class="export-btn" onclick="exportData()">تصدير البيانات</button>
+            </div>
+        </section>
+
+        <!-- ========== قائمة المشاركات ========== -->
+        <main class="submissions-section">
+            <h2 class="section-title">
+                <span>📋</span> المشاركات المستلمة
+            </h2>
+
+            <div id="submissionsContainer" class="submissions-container">
+                <!-- سيتم ملء المشاركات هنا بواسطة JavaScript -->
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h3>لا توجد مشاركات حالياً</h3>
+                    <p>عندما يرسل الطلاب اقتراحاتهم أو شكاويهم، ستظهر هنا</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- ========== تذييل الصفحة ========== -->
+        <footer class="admin-footer">
+            <p>© 2025 قريبين - لوحة تحكم الإدارة</p>
+        </footer>
+    </div>
+
+    <!-- ========== نافذة منبثقة لعرض التفاصيل ========== -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تفاصيل المشاركة</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- سيتم ملء التفاصيل هنا -->
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn delete-btn" onclick="deleteSubmission()">حذف</button>
+                <button class="modal-btn" onclick="closeModal()">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="admin-script.js"></script>
+</body>
+</html>

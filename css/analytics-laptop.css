@@ -1,0 +1,267 @@
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --card-bg: #fff;
+    --card-border: #e5e7ef;
+    --text-primary: #222;
+    --text-secondary: #888;
+    --accent-blue: #667eea;
+    --accent-purple: #764ba2;
+    --accent-pink: #f093fb;
+    --success-color: #4caf50;
+    --warning-color: #ff9800;
+    --danger-color: #e74c3c;
+    --info-color: #2196f3;
+    --bg: #f7f8fa;
+}
+
+body.admin-body {
+    background: var(--bg);
+    font-family: 'Cairo', sans-serif;
+    color: var(--text-primary);
+    min-height: 100vh;
+}
+
+.admin-container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 24px 12px;
+}
+
+.admin-header {
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--card-border);
+    color: var(--text-primary);
+    padding: 18px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.07);
+}
+
+.header-content {
+    max-width: 1024px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.brand h1 {
+    font-family: 'Amiri', serif;
+    font-size: 1.7rem;
+    margin: 0;
+    letter-spacing: 2px;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.admin-title {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin: 4px 0 0 0;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.admin-btn,
+.logout-btn {
+    background: var(--primary-gradient);
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.admin-btn:hover,
+.logout-btn:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.stats-section.analytics-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 28px 0;
+}
+
+.stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px;
+    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.06);
+    transition: box-shadow 0.2s;
+}
+
+.stat-card:hover {
+    box-shadow: 0 6px 24px rgba(102, 126, 234, 0.13);
+}
+
+.stat-icon {
+    font-size: 2.1rem;
+}
+
+.stat-info h3 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.stat-info p {
+    margin: 3px 0 0 0;
+    color: var(--text-secondary);
+    font-size: 0.93rem;
+}
+
+.charts-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin: 32px 0;
+    padding: 0 4px;
+}
+
+.chart-container {
+    background: var(--card-bg);
+    padding: 18px;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.06);
+}
+
+.chart-container.wide {
+    grid-column: 1 / -1;
+}
+
+.chart-container h3 {
+    text-align: center;
+    margin-bottom: 14px;
+    color: var(--text-primary);
+    font-size: 1.08rem;
+}
+
+.chart-container canvas {
+    max-height: 240px;
+}
+
+.universities-stats,
+.status-stats {
+    padding: 0;
+    margin: 28px 0;
+}
+
+.universities-grid,
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.university-stat-card,
+.status-card {
+    background: var(--card-bg);
+    padding: 14px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.06);
+    transition: box-shadow 0.2s;
+}
+
+.university-stat-card:hover,
+.status-card:hover {
+    box-shadow: 0 6px 24px rgba(102, 126, 234, 0.13);
+}
+
+.university-icon,
+.status-icon {
+    font-size: 2.2rem;
+    margin-bottom: 7px;
+}
+
+.university-stat-card h3,
+.status-card h3 {
+    color: var(--text-primary);
+    margin-bottom: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.university-stat-card .count,
+.status-card .count {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 7px 0;
+}
+
+.university-stat-card .label {
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+}
+
+.status-card.pending {
+    border-bottom: 3px solid var(--warning-color);
+}
+
+.status-card.in-progress {
+    border-bottom: 3px solid var(--info-color);
+}
+
+.status-card.resolved {
+    border-bottom: 3px solid var(--success-color);
+}
+
+.section-title {
+    font-size: 1.3rem;
+    color: var(--accent-blue);
+    margin-bottom: 12px;
+    font-weight: 700;
+    background: none;
+}
+
+.admin-footer {
+    text-align: center;
+    padding: 18px 0;
+    color: var(--text-secondary);
+    margin-top: 32px;
+    border-top: 1px solid var(--card-border);
+}
+
+@media (max-width: 1024px) {
+    .admin-container,
+    .header-content {
+        max-width: 100vw;
+    }
+    .charts-section {
+        grid-template-columns: 1fr;
+    }
+    .universities-grid,
+    .status-grid {
+        grid-template-columns: 1fr;
+    }
+    .stats-section.analytics-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+}

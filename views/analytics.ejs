@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحليلات قريبين - لوحة التحكم</title>
+    <!-- <link rel="stylesheet" href="../css/style.css"> -->
+    <link rel="stylesheet" href="../css/admin-style.css">
+    <!-- <link rel="stylesheet" href="../css/analytics-laptop.css" media="screen and (min-width:1024px) and (max-width:1024px)"> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+</head>
+<body class="admin-body">
+    <!-- ========== صفحة التحليلات ========== -->
+    <div class="admin-container">
+
+        <!-- ========== رأس الصفحة ========== -->
+        <header class="admin-header">
+            <div class="header-content">
+                <div class="brand">
+                    <h1 class="logo">قريبين</h1>
+                    <p class="admin-title">لوحة التحليلات والإحصائيات</p>
+                </div>
+                <div class="header-actions">
+                    <a href="/admin" class="admin-btn">← لوحة التحكم</a>
+                    <a href="/logout" class="logout-btn">خروج</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== بطاقات الإحصائيات الرئيسية ========== -->
+        <section class="stats-section analytics-stats">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-info">
+                    <h3 id="totalSubmissions">0</h3>
+                    <p>إجمالي المشاركات</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">💡</div>
+                <div class="stat-info">
+                    <h3 id="totalSuggestions">0</h3>
+                    <p>إجمالي الاقتراحات</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">❓</div>
+                <div class="stat-info">
+                    <h3 id="totalInquiries">0</h3>
+                    <p>إجمالي الاستفسارات</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                    <h3 id="resolvedCount">0</h3>
+                    <p>المشاركات المحلولة</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== قسم الرسوم البيانية ========== -->
+        <section class="charts-section">
+            <div class="chart-container">
+                <h3>توزيع الاقتراحات والاستفسارات</h3>
+                <canvas id="typeChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h3>توزيع المشاركات حسب الجامعة</h3>
+                <canvas id="universityChart"></canvas>
+            </div>
+
+            <div class="chart-container wide">
+                <h3>اتجاهات المشاركات (آخر 7 أيام)</h3>
+                <canvas id="trendsChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h3>حالة المشاركات</h3>
+                <canvas id="statusChart"></canvas>
+            </div>
+        </section>
+
+        <!-- ========== إحصائيات الجامعات ========== -->
+        <section class="universities-stats">
+            <h2 class="section-title">إحصائيات الجامعات</h2>
+            <div class="universities-grid">
+                <div class="university-stat-card">
+                    <div class="university-icon">🏛️</div>
+                    <h3>جامعة حلوان الحكومية</h3>
+                    <p class="count" id="govCount">0</p>
+                    <p class="label">مشاركة</p>
+                </div>
+
+                <div class="university-stat-card">
+                    <div class="university-icon">🏢</div>
+                    <h3>جامعة حلوان الأهلية</h3>
+                    <p class="count" id="privCount">0</p>
+                    <p class="label">مشاركة</p>
+                </div>
+
+                <div class="university-stat-card">
+                    <div class="university-icon">⚙️</div>
+                    <h3>جامعة حلوان التكنولوجية</h3>
+                    <p class="count" id="techCount">0</p>
+                    <p class="label">مشاركة</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== إحصائيات الحالات ========== -->
+        <section class="status-stats">
+            <h2 class="section-title">حالة المشاركات</h2>
+            <div class="status-grid">
+                <div class="status-card pending">
+                    <div class="status-icon">⏳</div>
+                    <h3>قيد المراجعة</h3>
+                    <p class="count" id="pendingCount">0</p>
+                </div>
+
+                <div class="status-card in-progress">
+                    <div class="status-icon">⚡</div>
+                    <h3>قيد المعالجة</h3>
+                    <p class="count" id="inProgressCount">0</p>
+                </div>
+
+                <div class="status-card resolved">
+                    <div class="status-icon">✨</div>
+                    <h3>تم الحل</h3>
+                    <p class="count" id="resolvedCountStatus">0</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== تذييل الصفحة ========== -->
+        <footer class="admin-footer">
+            <p>© 2025 قريبين - لوحة التحليلات والإحصائيات</p>
+        </footer>
+    </div>
+
+    <style>
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+            padding: 0 20px;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container.wide {
+            grid-column: 1 / -1;
+        }
+
+        .chart-container h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 1.2rem;
+        }
+
+        .chart-container canvas {
+            max-height: 300px;
+        }
+
+        .universities-stats,
+        .status-stats {
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .universities-grid,
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .university-stat-card,
+        .status-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .university-stat-card:hover,
+        .status-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .university-icon,
+        .status-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .university-stat-card h3,
+        .status-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .university-stat-card .count,
+        .status-card .count {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin: 10px 0;
+        }
+
+        .university-stat-card .label,
+        .status-card .label {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .status-card.pending {
+            border-left: 5px solid #ff9800;
+        }
+
+        .status-card.in-progress {
+            border-left: 5px solid #2196f3;
+        }
+
+        .status-card.resolved {
+            border-left: 5px solid #4caf50;
+        }
+
+        .analytics-stats {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        /* ====== Laptop Optimization (1024px - 1400px) ====== */
+        @media (min-width: 1024px) and (max-width: 1400px) {
+            .charts-section {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                padding: 0 10px;
+            }
+            .chart-container {
+                padding: 20px;
+            }
+            .chart-container h3 {
+                font-size: 1.05rem;
+            }
+            .universities-grid,
+            .status-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+            .university-stat-card,
+            .status-card {
+                padding: 18px;
+            }
+            .stat-card {
+                padding: 18px;
+            }
+            .stats-section.analytics-stats {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 15px;
+            }
+            .stat-info h3 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-container.wide {
+                grid-column: 1;
+            }
+        }
+    </style>
+
+    <script>
+        // Store current submission data for charts
+        let submissionsData = [];
+        let chartsInitialized = false;
+
+        // Initialize analytics on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAnalyticsData();
+            setInterval(loadAnalyticsData, 60000); // Refresh every minute
+        });
+
+        async function loadAnalyticsData() {
+            try {
+                const response = await fetch('/api/analytics');
+                const data = await response.json();
+
+                // Update stat cards
+                document.getElementById('totalSubmissions').textContent = data.total;
+                document.getElementById('totalSuggestions').textContent = data.suggestions;
+                document.getElementById('totalInquiries').textContent = data.inquiries;
+                document.getElementById('resolvedCount').textContent = data.statuses.resolved;
+
+                // Update university stats
+                document.getElementById('govCount').textContent = data.universities.government;
+                document.getElementById('privCount').textContent = data.universities.private;
+                document.getElementById('techCount').textContent = data.universities.tech;
+
+                // Update status stats
+                document.getElementById('pendingCount').textContent = data.statuses.pending;
+                document.getElementById('inProgressCount').textContent = data.statuses.inProgress;
+                document.getElementById('resolvedCountStatus').textContent = data.statuses.resolved;
+
+                // Initialize or update charts
+                if (!chartsInitialized) {
+                    initializeCharts(data);
+                    chartsInitialized = true;
+                } else {
+                    updateCharts(data);
+                }
+
+                submissionsData = data.lastSevenDays;
+            } catch (error) {
+                console.error('Error loading analytics:', error);
+            }
+        }
+
+        function initializeCharts(data) {
+            // Type Chart (Pie)
+            const typeCtx = document.getElementById('typeChart').getContext('2d');
+            new Chart(typeCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['اقتراح', 'استفسار'],
+                    datasets: [{
+                        data: [data.suggestions, data.inquiries],
+                        backgroundColor: ['#667eea', '#764ba2'],
+                        borderColor: ['#667eea', '#764ba2'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // University Chart (Bar)
+            const univCtx = document.getElementById('universityChart').getContext('2d');
+            new Chart(univCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['جامعة حلوان الحكومية', 'جامعة حلوان الأهلية', 'جامعة حلوان التكنولوجية'],
+                    datasets: [{
+                        label: 'عدد المشاركات',
+                        data: [data.universities.government, data.universities.private, data.universities.tech],
+                        backgroundColor: ['#667eea', '#764ba2', '#f093fb'],
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: true
+                        }
+                    }
+                }
+            });
+
+            // Trends Chart (Line)
+            const trendsCtx = document.getElementById('trendsChart').getContext('2d');
+            const dateLabels = data.lastSevenDays.map(d => new Date(d.createdAt).toLocaleDateString('ar-EG', { month: 'short', day: 'numeric' }));
+            const counts = {};
+            data.lastSevenDays.forEach(d => {
+                const date = new Date(d.createdAt).toLocaleDateString('ar-EG', { month: 'short', day: 'numeric' });
+                counts[date] = (counts[date] || 0) + 1;
+            });
+
+            new Chart(trendsCtx, {
+                type: 'line',
+                data: {
+                    labels: Object.keys(counts),
+                    datasets: [{
+                        label: 'عدد المشاركات اليومية',
+                        data: Object.values(counts),
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        }
+                    }
+                }
+            });
+
+            // Status Chart (Pie)
+            const statusCtx = document.getElementById('statusChart').getContext('2d');
+            new Chart(statusCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['قيد المراجعة', 'قيد المعالجة', 'تم الحل'],
+                    datasets: [{
+                        data: [data.statuses.pending, data.statuses.inProgress, data.statuses.resolved],
+                        backgroundColor: ['#ff9800', '#2196f3', '#4caf50'],
+                        borderColor: ['#ff9800', '#2196f3', '#4caf50'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateCharts(data) {
+            // Update data in existing charts (you can extend this as needed)
+            console.log('Charts data updated');
+        }
+    </script>
+</body>
+</html>

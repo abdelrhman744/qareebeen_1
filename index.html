@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قريبين - منصة الاقتراحات والاستفسارات</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ========== فيديو الخلفية ========== -->
+    <video autoplay muted loop playsinline class="video-background">
+        <source src="background.mp4" type="video/mp4">
+    </video>
+
+    <!-- ========== طبقة شفافة فوق الفيديو ========== -->
+    <div class="video-overlay"></div>
+
+    <div class="container">
+        <header>
+            <h1 class="logo">قريبين</h1>
+            <p class="subtitle">صوتك يهمنا، شاركنا رأيك</p>
+        </header>
+
+        <main>
+            <div class="welcome-message">
+                <h2>اختر جامعتك</h2>
+                <p>اختر الجامعة التابع لها لبدء مشاركة اقتراحاتك واستفساراتك</p>
+            </div>
+
+            <div class="university-options">
+                <div class="university-card" data-university="government">
+                    <div class="card-logo">
+                        <img src="helwan-gov.png" alt="جامعة حلوان الحكومية">
+                    </div>
+                    <h3>جامعة حلوان الحكومية</h3>
+                    <p>للطلاب المنتسبين للجامعة الحكومية</p>
+                    <button class="select-btn" onclick="selectUniversity('government')">اختر</button>
+                </div>
+
+                <div class="university-card" data-university="private">
+                    <div class="card-logo">
+                        <img src="new_logo.png" alt="جامعة حلوان الأهلية">
+                    </div>
+                    <h3>جامعة حلوان الأهلية</h3>
+                    <p>للطلاب المنتسبين للجامعة الأهلية</p>
+                    <button class="select-btn" onclick="selectUniversity('private')">اختر</button>
+                </div>
+
+                <div class="university-card" data-university="tech">
+                    <div class="card-logo">
+                        <img src="helwan-tech.png" alt="جامعة حلوان التكنولوجية">
+                    </div>
+                    <h3>جامعة حلوان التكنولوجية</h3>
+                    <p>للطلاب المنتسبين للجامعة التكنولوجية</p>
+                    <button class="select-btn" onclick="selectUniversity('tech')">اختر</button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2025 قريبين - جميع الحقوق محفوظة</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

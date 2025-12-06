@@ -1,0 +1,711 @@
+/* ========================================
+Import Arabic Fonts from Google Fonts
+======================================== */
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap');
+
+/* ========================================
+General Page Settings
+======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background: #000;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Background Video */
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
+
+/* Overlay Layer for Better Readability */
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: -1;
+}
+
+/* ========================================
+Main Container
+   ======================================== */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    background: transparent;
+    border-radius: 30px;
+    padding: 40px;
+    animation: fadeIn 0.8s ease-in-out;
+    position: relative;
+    z-index: 1;
+}
+
+/* Form Pages Container */
+.form-container {
+    max-width: 900px;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   Header
+   ======================================== */
+header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+/* "Qareebeen" Logo */
+.logo {
+    font-family: 'Amiri', serif;
+    font-size: 5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 10px;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
+    letter-spacing: 2px;
+}
+
+/* Subtitle Text */
+.subtitle {
+    font-size: 1.2rem;
+    color: white;
+    font-weight: 400;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+/* ========================================
+   Welcome Message (Home Page)
+   ======================================== */
+.welcome-message {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.welcome-message h2 {
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.welcome-message p {
+    font-size: 1.1rem;
+    color: white;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+/* ========================================
+   University Cards (Home Page)
+   ======================================== */
+.university-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+/* Card Design */
+.university-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+}
+
+/* Hover Effect */
+.university-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Icon */
+.card-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    filter: grayscale(0.3);
+}
+
+/* Logo */
+.card-logo {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.card-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 80px;
+    background-color: #fff;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+/* Zoom Logo on Hover */
+.university-card:hover .card-logo {
+    transform: scale(1.1);
+}
+
+/* Card Title */
+.university-card h3 {
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 15px;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* Card Text */
+.university-card p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 25px;
+    line-height: 1.6;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Select Button */
+.select-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.select-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 7px 20px rgba(102, 126, 234, 0.6);
+}
+
+.select-btn:active {
+    transform: scale(0.98);
+}
+
+/* ========================================
+   Form Pages - Header
+   ======================================== */
+.form-header {
+    position: relative;
+    padding-bottom: 30px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.form-header .logo {
+    font-size: 3rem;
+    margin-bottom: 5px;
+    color: white;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
+}
+
+.form-header .subtitle {
+    font-size: 1rem;
+    color: white;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+/* Back Button */
+.back-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px 20px;
+    background: white;
+    color: #667eea;
+    text-decoration: none;
+    border-radius: 25px;
+    border: 2px solid #667eea;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: #667eea;
+    color: white;
+    transform: translateX(5px);
+}
+
+/* University Info */
+.university-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.university-info h1 {
+    font-size: 2rem;
+    color: white;
+    font-weight: 700;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
+}
+
+.university-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    object-fit: contain;
+}
+
+/* ========================================
+   Form - General Design
+   ======================================== */
+.suggestion-form {
+    margin-top: 40px;
+}
+
+/* Form Section */
+.form-section {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Section Title */
+.section-title {
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 25px;
+    font-weight: 700;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* ========================================
+   Input Fields
+   ======================================== */
+/* Row with Multiple Fields */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* Form Group */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+/* Field Label */
+.form-group label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 8px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Required Field Indicator */
+.required {
+    color: #e74c3c;
+    font-weight: 700;
+}
+
+/* Text and Email Fields */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group select {
+    padding: 12px 15px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: 'Cairo', sans-serif;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-weight: 500;
+}
+
+/* Placeholder styling */
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Focus Effect */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: white;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Select List */
+.form-group select {
+    cursor: pointer;
+}
+
+/* Select options styling */
+.form-group select option {
+    background: #2a5298;
+    color: white;
+}
+
+/* Textarea */
+.form-group textarea {
+    padding: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: 'Cairo', sans-serif;
+    min-height: 200px;
+    resize: vertical;
+    line-height: 1.6;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-weight: 500;
+}
+
+/* Helper Text */
+.helper-text {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 5px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Character Counter */
+.character-count {
+    text-align: left;
+    font-weight: 600;
+}
+
+/* ========================================
+   Radio Buttons
+   ======================================== */
+.radio-group {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Hide Default Radio Button */
+.radio-label input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+/* Custom Radio Button Design */
+.radio-custom {
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    margin-left: 10px;
+    position: relative;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Inner Dot */
+.radio-label input[type="radio"]:checked+.radio-custom::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+}
+
+/* Radio Button Text */
+.radio-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Hover Effect */
+.radio-label:hover .radio-custom {
+    border-color: white;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* ========================================
+   Submit and Reset Buttons
+   ======================================== */
+.form-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+/* Submit Button */
+.submit-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px 50px;
+    font-size: 1.2rem;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    margin-bottom: 10px;
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(102, 126, 234, 0.6);
+}
+
+.submit-btn:active {
+    transform: translateY(-1px);
+}
+
+/* Reset Button */
+.reset-btn {
+    background: white;
+    color: #e74c3c;
+    border: 2px solid #e74c3c;
+    padding: 15px 50px;
+    font-size: 1.2rem;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.reset-btn:hover {
+    background: #e74c3c;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+}
+
+.reset-btn:active {
+    transform: translateY(-1px);
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+footer {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* ========================================
+   Additional Animations
+   ======================================== */
+/* Selected Card */
+.university-card.selected {
+    border-color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.3);
+    animation: pulse 0.5s ease-in-out;
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+/* Tablets and Large Phones */
+@media (max-width: 768px) {
+    /* Reduce Padding */
+    .container {
+        padding: 25px;
+    }
+
+    /* Smaller Logo */
+    .logo {
+        font-size: 3.5rem;
+    }
+
+    /* Smaller Welcome Message */
+    .welcome-message h2 {
+        font-size: 1.5rem;
+    }
+
+    /* Single Column Cards */
+    .university-options {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    /* Reduce Card Padding */
+    .university-card {
+        padding: 25px;
+    }
+
+    /* Improve Video Display on Mobile */
+    .video-background {
+        object-fit: cover;
+    }
+
+    /* Form Header Design */
+    .form-header .logo {
+        font-size: 2.5rem;
+    }
+
+    .university-info {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .university-info h1 {
+        font-size: 1.5rem;
+    }
+
+    .university-logo {
+        width: 60px;
+        height: 60px;
+    }
+
+    /* Single Column Fields */
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    /* Smaller Action Buttons */
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .submit-btn,
+    .reset-btn {
+        width: 100%;
+        padding: 15px 30px;
+    }
+
+    /* Adjust Back Button */
+    .back-btn {
+        position: static;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+}
+
+/* Small Phones */
+@media (max-width: 480px) {
+    /* Smaller Logo */
+    .logo {
+        font-size: 2.5rem;
+    }
+
+    .form-header .logo {
+        font-size: 2rem;
+    }
+
+    /* Reduce Container Padding */
+    .container {
+        padding: 15px;
+    }
+
+    /* Reduce Section Padding */
+    .form-section {
+        padding: 20px;
+    }
+
+    /* Smaller Text */
+    .section-title {
+        font-size: 1.2rem;
+    }
+
+    .form-group label {
+        font-size: 0.9rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        font-size: 0.9rem;
+    }
+
+    /* Smaller Radio Buttons */
+    .radio-group {
+        flex-direction: column;
+        gap: 15px;
+    }
+}

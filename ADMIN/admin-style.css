@@ -1,0 +1,752 @@
+/* ========================================
+   ملف CSS خاص بصفحة الأدمن
+   ======================================== */
+
+/* ========================================
+   تصميم عام لصفحة الأدمن
+   ======================================== */
+.admin-body {
+    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+    padding: 0;
+    min-height: 100vh;
+    position: relative;
+}
+
+.admin-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    position: relative;
+    z-index: 1;
+}
+
+/* ========================================
+   رأس صفحة الأدمن
+   ======================================== */
+.admin-header {
+    background-image: url('../presedint.jpg');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 25px 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 10;
+    min-height: 150px;
+}
+
+.admin-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.85) 0%, rgba(118, 75, 162, 0.85) 100%);
+    z-index: -1;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* شعارات الجامعات */
+.university-logos {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.university-logos img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.8);
+    background: white;
+    padding: 3px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.university-logos img:hover {
+    transform: scale(1.1) translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    border-color: white;
+}
+
+.brand .logo {
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 5px;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.admin-title {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+}
+
+.header-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* زر التحديث */
+.refresh-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.refresh-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+}
+
+.refresh-btn:active {
+    transform: translateY(0);
+}
+
+/* زر الخروج */
+.logout-btn {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+}
+
+.logout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.5);
+}
+
+/* ========================================
+   قسم الإحصائيات
+   ======================================== */
+.stats-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 0 40px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(102, 126, 234, 0.3);
+    background: white;
+}
+
+.stat-icon {
+    font-size: 3rem;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+}
+
+.stat-info h3 {
+    font-size: 2.5rem;
+    color: #667eea;
+    margin-bottom: 5px;
+}
+
+.stat-info p {
+    font-size: 1rem;
+    color: #666;
+    font-weight: 600;
+}
+
+/* ========================================
+   قسم الفلاتر
+   ======================================== */
+.filters-section {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 25px 40px;
+    margin: 0 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-end;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.filter-group select,
+.filter-group input {
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: 'Cairo', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.clear-filters-btn,
+.export-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.clear-filters-btn {
+    background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+    color: white;
+}
+
+.clear-filters-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(149, 165, 166, 0.4);
+}
+
+.export-btn {
+    background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+    color: white;
+}
+
+.export-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+}
+
+/* ========================================
+   قسم المشاركات
+   ======================================== */
+.submissions-section {
+    padding: 0 40px 40px;
+}
+
+.section-title {
+    color: white;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.submissions-container {
+    display: grid;
+    gap: 20px;
+}
+
+/* حالة فارغة */
+.empty-state {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 60px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.empty-icon {
+    font-size: 5rem;
+    margin-bottom: 20px;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* بطاقة المشاركة */
+.submission-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    border-right: 5px solid #667eea;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.submission-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.submission-card.suggestion {
+    border-right-color: #3498db;
+}
+
+.submission-card.inquiry {
+    border-right-color: #f39c12;
+}
+
+/* رأس البطاقة */
+.submission-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.submission-info h3 {
+    font-size: 1.3rem;
+    color: white;
+    margin-bottom: 8px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.submission-meta {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.submission-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.submission-badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.badge {
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.badge.university {
+    background: #667eea;
+    color: white;
+}
+
+.badge.type {
+    background: #ecf0f1;
+    color: #333;
+}
+
+.badge.type.suggestion {
+    background: #3498db;
+    color: white;
+}
+
+.badge.type.inquiry {
+    background: #f39c12;
+    color: white;
+}
+
+/* محتوى البطاقة */
+.submission-content {
+    margin-bottom: 20px;
+}
+
+.submission-content p {
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1.6;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.content-preview {
+    max-height: 100px;
+    overflow: hidden;
+    position: relative;
+}
+
+.content-preview::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.15));
+}
+
+/* تذييل البطاقة */
+.submission-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.status-select {
+    padding: 8px 15px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-weight: 600;
+}
+
+.status-select.pending {
+    border-color: #f39c12;
+    background: rgba(243, 156, 18, 0.3);
+    color: #fff;
+}
+
+.status-select.in-progress {
+    border-color: #3498db;
+    background: rgba(52, 152, 219, 0.3);
+    color: #fff;
+}
+
+.status-select.resolved {
+    border-color: #27ae60;
+    background: rgba(39, 174, 96, 0.3);
+    color: #fff;
+}
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.view-btn {
+    background: linear-gradient(135deg, #667eea 0%, #5568d3 100%);
+    color: white;
+}
+
+.view-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.delete-btn-small {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+}
+
+.delete-btn-small:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+/* ========================================
+   النافذة المنبثقة (Modal)
+   ======================================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: slideIn 0.3s ease-in-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    padding: 25px 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-size: 1.5rem;
+}
+
+.close-modal {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close-modal:hover {
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 30px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-detail {
+    margin-bottom: 20px;
+}
+
+.modal-detail label {
+    font-weight: 700;
+    color: #667eea;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.modal-detail p {
+    color: #555;
+    font-size: 1rem;
+    line-height: 1.6;
+    background: #f8f9fa;
+    padding: 12px 15px;
+    border-radius: 8px;
+}
+
+.modal-footer {
+    padding: 20px 30px;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.modal-btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-btn:not(.delete-btn) {
+    background: #95a5a6;
+    color: white;
+}
+
+.modal-btn:not(.delete-btn):hover {
+    background: #7f8c8d;
+}
+
+.modal-btn.delete-btn {
+    background: #e74c3c;
+    color: white;
+}
+
+.modal-btn.delete-btn:hover {
+    background: #c0392b;
+}
+
+/* ========================================
+   تذييل صفحة الأدمن
+   ======================================== */
+.admin-footer {
+    text-align: center;
+    padding: 30px;
+    color: white;
+    font-size: 0.9rem;
+}
+
+/* ========================================
+   التصميم المتجاوب لصفحة الأدمن
+   ======================================== */
+@media (max-width: 768px) {
+    .admin-header,
+    .stats-section,
+    .filters-section,
+    .submissions-section {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .filters-section {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .brand .logo {
+        font-size: 2rem;
+    }
+
+    .stats-section {
+        grid-template-columns: 1fr;
+    }
+
+    .filters-section {
+        flex-direction: column;
+    }
+
+    .filter-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .clear-filters-btn,
+    .export-btn {
+        width: 100%;
+    }
+
+    .submission-header {
+        flex-direction: column;
+    }
+
+    .submission-footer {
+        flex-direction: column;
+    }
+
+    .card-actions {
+        width: 100%;
+    }
+
+    .action-btn {
+        flex: 1;
+    }
+
+    .modal-content {
+        width: 95%;
+        max-height: 95vh;
+    }
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 20px;
+    }
+}

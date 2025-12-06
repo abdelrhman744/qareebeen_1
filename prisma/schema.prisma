@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Submission Model - لتخزين اقتراحات واستفسارات الطلاب
+model Submission {
+  id            String   @id @default(cuid())
+  studentName   String
+  studentId     String
+  faculty       String
+  year          String
+  email         String
+  type          String   // "suggestion" or "inquiry"
+  title         String
+  content       String
+  university    String   // "government", "private", or "tech"
+  status        String   @default("pending") // "pending", "in-progress", "resolved"
+  
+  // Metadata
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Admin notes
+  adminNotes    String?
+
+  @@index([university])
+  @@index([status])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// Analytics Model - لتتبع الإحصائيات
+model Analytics {
+  id              String   @id @default(cuid())
+  date            DateTime @default(now())
+  totalSubmissions Int     @default(0)
+  suggestionsCount Int     @default(0)
+  inquiriesCount  Int     @default(0)
+  governmentCount Int     @default(0)
+  privateCount    Int     @default(0)
+  techCount       Int     @default(0)
+  
+  @@index([date])
+}
+
+// Admin Model - للتحكم بحسابات الأدمن
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // هاش كلمة المرور
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
