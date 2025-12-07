@@ -2,12 +2,13 @@
   "version": 2,
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
+  "installCommand": "npm install",
   "env": {
     "NODE_ENV": "production",
     "PORT": "3000"
   },
   "functions": {
-    "app.js": {
+    "api/index.js": {
       "memory": 1024,
       "maxDuration": 60
     }
