@@ -424,13 +424,15 @@ async function updateAnalytics() {
 // SERVER STARTUP
 // ========================================
 
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
-    console.log(`📋 Admin panel at http://localhost:${PORT}/admin/login`);
-});
+// app.listen(PORT, () => {
+//     console.log(`🚀 Server running on http://localhost:${PORT}`);
+//     console.log(`📋 Admin panel at http://localhost:${PORT}/admin/login`);
+// });
 
 // Handle Prisma cleanup
 process.on('SIGINT', async () => {
     await prisma.$disconnect();
     process.exit(0);
 });
+
+export default app;
