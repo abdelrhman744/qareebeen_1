@@ -5,14 +5,15 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio",
-    "prisma:seed": "node prisma/seed.js",
-    "setup": "npm install && npx prisma migrate dev --name init && node prisma/seed.js"
-  },
+  "start": "node app.js",
+  "dev": "nodemon app.js",
+  "build": "echo 'No build necessary for Node.js app'",
+  "prisma:generate": "prisma generate",
+  "prisma:migrate": "prisma migrate dev",
+  "prisma:studio": "prisma studio",
+  "prisma:seed": "node prisma/seed.js",
+  "setup": "npm install && npx prisma migrate dev --name init && node prisma/seed.js"
+},
   "keywords": [
     "suggestions",
     "platform",
