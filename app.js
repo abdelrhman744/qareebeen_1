@@ -59,64 +59,105 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+// Verify transporter configuration at startup to catch auth/config errors early
+transporter.verify()
+    .then(() => console.log('Nodemailer transporter verified'))
+    .catch(err => {
+        console.error('Error verifying Nodemailer transporter. Emails will fail until fixed.');
+        console.error(err && err.message ? err.message : err);
+    });
+
+// ==========================
+// Email HTML template helpers
+// ==========================
+function buildEmailWrapper(headerTitle, innerHtml) {
+    return `
+        <div style="direction: rtl; font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px;">
+            <div style="max-width: 700px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.08);">
+                <h2 style="color: #667eea; text-align: center; border-bottom: 3px solid #667eea; padding-bottom: 12px; margin-top:0;">${headerTitle}</h2>
+                ${innerHtml}
+                <footer style="text-align: center; margin-top: 24px; padding-top: 18px; border-top: 1px solid #e6eefc; color: #999; font-size: 12px;">
+                    <p>© 2025 قريبين - منصة الاقتراحات والاستفسارات</p>
+                </footer>
+            </div>
+        </div>
+    `;
+}
+
+function buildSubmissionHtml(submission) {
+    return `
+        <p style="color: #333; font-size: 16px; margin: 18px 0;">شكراً لك على مشاركتك القيمة. تم استقبال مشاركتك وسيتم مراجعتها قريباً.</p>
+
+        <div style="background-color: #f9f9f9; padding: 16px; border-right: 4px solid #667eea; margin: 16px 0; border-radius:8px;">
+            <h3 style="color: #667eea; margin: 0 0 8px 0;">تفاصيل المشاركة:</h3>
+            <p style="margin: 4px 0;"><strong>الموضوع:</strong> ${submission.title}</p>
+            <p style="margin: 4px 0;"><strong>النوع:</strong> ${submission.type === 'suggestion' ? 'اقتراح' : 'استفسار'}</p>
+            <p style="margin: 4px 0;"><strong>الجامعة:</strong> ${getUniversityName(submission.university)}</p>
+            <p style="margin: 4px 0;"><strong>تاريخ الإرسال:</strong> ${new Date(submission.createdAt).toLocaleDateString('ar-EG')}</p>
+        </div>
+
+        <p style="color: #666; font-size: 14px; margin-top: 12px;">سيتم التواصل معك عبر البريد الإلكتروني: <strong>${submission.email}</strong></p>
+    `;
+}
+
+function buildAdminNotificationHtml(submission) {
+    return `
+        <div style="color:#222;">
+            <p style="margin:6px 0;"><strong>الاسم:</strong> ${submission.studentName}</p>
+            <p style="margin:6px 0;"><strong>الجامعة:</strong> ${getUniversityName(submission.university)}</p>
+            <p style="margin:6px 0;"><strong>الكلية:</strong> ${submission.faculty}</p>
+            <p style="margin:6px 0;"><strong>البريد:</strong> ${submission.email}</p>
+            <p style="margin:6px 0;"><strong>النوع:</strong> ${submission.type}</p>
+            <p style="margin:6px 0;"><strong>الموضوع:</strong> ${submission.title}</p>
+            <p style="margin:6px 0;"><strong>التفاصيل:</strong> ${submission.content}</p>
+            <p style="margin:12px 0;"><a href="http://localhost:${PORT}/admin">اذهب إلى لوحة التحكم</a></p>
+        </div>
+    `;
+}
+
+function buildAdminNoteHtml(submission, adminName, adminNotes) {
+    return `
+        <p style="color: #333; font-size: 15px; margin: 18px 0;">السلام عليكم،</p>
+
+        <div style="background-color: #f9f9f9; padding: 16px; border-right: 4px solid #667eea; margin: 16px 0; border-radius:8px;">
+            <h3 style="color: #667eea; margin: 0 0 8px 0;">تفاصيل مشاركتك</h3>
+            <p style="margin: 4px 0;"><strong>الموضوع:</strong> ${submission.title}</p>
+            <p style="margin: 4px 0;"><strong>النوع:</strong> ${submission.type === 'suggestion' ? 'اقتراح' : 'استفسار'}</p>
+            <p style="margin: 4px 0;"><strong>الجامعة:</strong> ${getUniversityName(submission.university)}</p>
+            <p style="margin: 4px 0;"><strong>التاريخ:</strong> ${new Date(submission.createdAt).toLocaleDateString('ar-EG')}</p>
+        </div>
+
+        <div style="background: #fff; padding: 14px; border: 1px solid #eef2ff; border-radius: 8px; margin-bottom: 18px;">
+            <p style="margin:0 0 8px 0; color:#333;"><strong>ملاحظة من ${adminName}:</strong></p>
+            <div style="background:#f1f5ff; padding:12px; border-radius:6px; color:#222;">${adminNotes.replace(/\n/g, '<br>')}</div>
+        </div>
+
+        <p style="color: #666; font-size: 14px; margin-top: 12px;">يمكنك الرد أو متابعة الحالة من خلال المنصة.</p>
+    `;
+}
+
 // Function to send email notifications
 async function sendSubmissionEmail(submission) {
     try {
-        const htmlTemplate = `
-            <div style="direction: rtl; font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px;">
-                <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                    <h2 style="color: #667eea; text-align: center; border-bottom: 3px solid #667eea; padding-bottom: 15px;">
-                        تم استقبال مشاركتك بنجاح ✓
-                    </h2>
-                    
-                    <p style="color: #333; font-size: 16px; margin: 20px 0;">
-                        شكراً لك على مشاركتك القيمة. تم استقبال مشاركتك وسيتم مراجعتها قريباً.
-                    </p>
-                    
-                    <div style="background-color: #f9f9f9; padding: 15px; border-right: 4px solid #667eea; margin: 20px 0;">
-                        <h3 style="color: #667eea; margin-top: 0;">تفاصيل المشاركة:</h3>
-                        <p><strong>الموضوع:</strong> ${submission.title}</p>
-                        <p><strong>النوع:</strong> ${submission.type === 'suggestion' ? 'اقتراح' : 'استفسار'}</p>
-                        <p><strong>الجامعة:</strong> ${getUniversityName(submission.university)}</p>
-                        <p><strong>تاريخ الإرسال:</strong> ${new Date(submission.createdAt).toLocaleDateString('ar-EG')}</p>
-                    </div>
-                    
-                    <p style="color: #666; font-size: 14px; margin-top: 20px;">
-                        سيتم التواصل معك عبر البريد الإلكتروني: <strong>${submission.email}</strong>
-                    </p>
-                    
-                    <footer style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; color: #999; font-size: 12px;">
-                        <p>© 2025 قريبين - منصة الاقتراحات والاستفسارات</p>
-                    </footer>
-                </div>
-            </div>
-        `;
+        const submissionInner = buildSubmissionHtml(submission);
+        const submissionHtml = buildEmailWrapper('تم استقبال مشاركتك بنجاح ✓', submissionInner);
 
         await transporter.sendMail({
             from: process.env.GMAIL_USER,
             to: submission.email,
             subject: `تم استقبال مشاركتك: ${submission.title}`,
-            html: htmlTemplate
+            html: submissionHtml
         });
 
-        // Send admin notification
+        // Send admin notification (styled)
+        const adminInner = `<h3 style="color:#667eea;">مشاركة جديدة وردت</h3>` + buildAdminNotificationHtml(submission);
+        const adminHtml = buildEmailWrapper('مشاركة جديدة واردة', adminInner);
+
         await transporter.sendMail({
             from: process.env.GMAIL_USER,
             to: process.env.ADMIN_EMAIL,
             subject: `مشاركة جديدة: ${submission.title}`,
-            html: `
-                <div style="direction: rtl; font-family: Arial, sans-serif;">
-                    <h2>مشاركة جديدة وردت</h2>
-                    <p><strong>الاسم:</strong> ${submission.studentName}</p>
-                    <p><strong>الجامعة:</strong> ${getUniversityName(submission.university)}</p>
-                    <p><strong>الكلية:</strong> ${submission.faculty}</p>
-                    <p><strong>البريد:</strong> ${submission.email}</p>
-                    <p><strong>النوع:</strong> ${submission.type}</p>
-                    <p><strong>الموضوع:</strong> ${submission.title}</p>
-                    <p><strong>التفاصيل:</strong> ${submission.content}</p>
-                    <p><a href="http://localhost:${PORT}/admin">اذهب إلى لوحة التحكم</a></p>
-                </div>
-            `
+            html: adminHtml
         });
 
         console.log('Email sent successfully');
@@ -242,6 +283,15 @@ app.post('/admin/login', async (req, res) => {
 // Middleware to check admin session
 const checkAdminSession = (req, res, next) => {
     if (!req.session.admin) {
+        // If this is an API request, return JSON 401 so frontend fetch calls
+        // receive a JSON error instead of an HTML redirect page.
+        const acceptsJson = req.headers.accept && req.headers.accept.indexOf('application/json') !== -1;
+        const isApiPath = req.path && req.path.startsWith('/api');
+
+        if (isApiPath || acceptsJson || req.xhr) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
         return res.redirect('/admin/login');
     }
     next();
@@ -424,10 +474,10 @@ async function updateAnalytics() {
 // SERVER STARTUP
 // ========================================
 
-// app.listen(PORT, () => {
-//     console.log(`🚀 Server running on http://localhost:${PORT}`);
-//     console.log(`📋 Admin panel at http://localhost:${PORT}/admin/login`);
-// });
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`📋 Admin panel at http://localhost:${PORT}/admin/login`);
+});
 
 // Handle Prisma cleanup
 process.on('SIGINT', async () => {
@@ -436,3 +486,49 @@ process.on('SIGINT', async () => {
 });
 
 export default app;
+
+// Save admin notes and email the submitter (PROTECTED)
+app.post('/api/submissions/:id/notes', checkAdminSession, async (req, res) => {
+    try {
+        const submissionId = req.params.id;
+        const { adminNotes } = req.body;
+
+        if (!adminNotes || typeof adminNotes !== 'string') {
+            return res.status(400).json({ error: 'محتوى الملاحظات مطلوب' });
+        }
+
+        // Update submission with admin notes
+        const submission = await prisma.submission.update({
+            where: { id: submissionId },
+            data: { adminNotes }
+        });
+
+        if (!submission) {
+            return res.status(404).json({ error: 'المشاركة غير موجودة' });
+        }
+
+        // Compose email to submitter
+        const adminName = (req.session && req.session.admin && req.session.admin.name) ? req.session.admin.name : (req.session && req.session.admin && req.session.admin.email) || 'إدارة قريبين';
+        const noteInner = buildAdminNoteHtml(submission, adminName, adminNotes);
+        const mailHtml = buildEmailWrapper(`ملاحظة من ${adminName}`, noteInner);
+
+        // Send email
+        try {
+            await transporter.sendMail({
+                from: process.env.GMAIL_USER,
+                to: submission.email,
+                subject: `ملاحظة بشأن مشاركتك: ${submission.title}`,
+                html: mailHtml
+            });
+
+            res.json({ success: true, message: 'تم حفظ الملاحظة وإرسالها للمرسل' });
+        } catch (mailErr) {
+            console.error('Error sending admin note email:', mailErr && mailErr.message ? mailErr.message : mailErr);
+            // Return an informative error to the client (safe for debugging). Remove `details` in production.
+            return res.status(500).json({ error: 'حدث خطأ أثناء إرسال الملاحظة', details: mailErr && mailErr.message ? mailErr.message : String(mailErr) });
+        }
+    } catch (error) {
+        console.error('Error in /api/submissions/:id/notes route:', error && error.message ? error.message : error);
+        res.status(500).json({ error: 'حدث خطأ أثناء إرسال الملاحظة', details: error && error.message ? error.message : String(error) });
+    }
+});

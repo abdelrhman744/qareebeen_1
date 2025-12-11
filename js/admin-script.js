@@ -11,7 +11,7 @@ let currentSubmissionId = null;
  */
 async function loadSubmissions() {
     try {
-        const response = await fetch('/api/submissions');
+        const response = await fetch('/api/submissions', { credentials: 'include' });
         const submissions = await response.json();
 
         allSubmissions = submissions;
@@ -182,6 +182,7 @@ async function closeModal() {
             try {
                 await fetch(`/api/submissions/${currentSubmissionId}`, {
                     method: 'PUT',
+                    credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -230,7 +231,8 @@ async function deleteSubmission() {
 
     try {
         await fetch(`/api/submissions/${currentSubmissionId}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            credentials: 'include'
         });
 
         closeModal();
@@ -381,5 +383,201 @@ window.addEventListener('click', (e) => {
     const modal = document.getElementById('detailsModal');
     if (e.target === modal) {
         closeModal();
+    }
+});
+
+/**
+ * Export the current submission as a styled PDF and download it.
+ */
+async function exportSubmissionPdf() {
+    if (!currentSubmissionId) return alert('لا توجد مشاركة محددة للتصدير.');
+
+    const submission = allSubmissions.find(s => s.id === currentSubmissionId);
+    if (!submission) return alert('المشاركة غير موجودة محلياً. الرجاء إعادة تحميل الصفحة.');
+
+    // Build a temporary container with styles similar to the email/template
+    const container = document.createElement('div');
+    container.style.direction = 'rtl';
+    container.style.fontFamily = 'Arial, Helvetica, sans-serif';
+    container.style.padding = '20px';
+    container.style.backgroundColor = '#ffffff';
+    container.style.color = '#222';
+    container.style.maxWidth = '800px';
+    container.style.margin = '0 auto';
+
+    const header = document.createElement('h1');
+    header.textContent = submission.title;
+    header.style.color = '#667eea';
+    header.style.textAlign = 'center';
+    header.style.borderBottom = '3px solid #667eea';
+    header.style.paddingBottom = '8px';
+    header.style.margin = '0 0 12px 0';
+
+    const metaBox = document.createElement('div');
+    metaBox.style.background = '#f9f9f9';
+    metaBox.style.borderRight = '4px solid #667eea';
+    metaBox.style.padding = '12px';
+    metaBox.style.borderRadius = '6px';
+    metaBox.style.marginBottom = '12px';
+
+    metaBox.innerHTML = `
+        <p style="margin:4px 0"><strong>الاسم:</strong> ${submission.studentName}</p>
+        <p style="margin:4px 0"><strong>الجامعة:</strong> ${getUniversityName(submission.university)}</p>
+        <p style="margin:4px 0"><strong>الكلية:</strong> ${submission.faculty}</p>
+        <p style="margin:4px 0"><strong>البريد:</strong> ${submission.email}</p>
+        <p style="margin:4px 0"><strong>النوع:</strong> ${submission.type === 'suggestion' ? 'اقتراح' : 'استفسار'}</p>
+        <p style="margin:4px 0"><strong>التاريخ:</strong> ${formatDate(submission.createdAt)}</p>
+    `;
+
+    const contentBox = document.createElement('div');
+    contentBox.style.padding = '12px';
+    contentBox.style.marginBottom = '12px';
+    contentBox.style.border = '1px solid #eef2ff';
+    contentBox.style.borderRadius = '6px';
+    contentBox.innerHTML = `
+        <h3 style="color:#667eea; margin-top:0">التفاصيل</h3>
+        <p style="white-space:pre-wrap;">${submission.content}</p>
+    `;
+
+    const notesArea = document.getElementById('adminNotesTextarea');
+    const adminNotes = notesArea ? notesArea.value.trim() : (submission.adminNotes || '');
+
+    const notesBox = document.createElement('div');
+    notesBox.style.background = '#f1f5ff';
+    notesBox.style.padding = '12px';
+    notesBox.style.borderRadius = '6px';
+    notesBox.style.marginBottom = '8px';
+    notesBox.innerHTML = `
+        <h3 style="color:#667eea; margin-top:0">ملاحظات الإدارة</h3>
+        <div style="white-space:pre-wrap;">${adminNotes || '<em>لا توجد ملاحظات</em>'}</div>
+    `;
+
+    // Footer with branding
+    const footer = document.createElement('div');
+    footer.style.textAlign = 'center';
+    footer.style.color = '#999';
+    footer.style.marginTop = '18px';
+    footer.innerHTML = `<small>© 2025 قريبين - منصة الاقتراحات والاستفسارات</small>`;
+
+    container.appendChild(header);
+    container.appendChild(metaBox);
+    container.appendChild(contentBox);
+    container.appendChild(notesBox);
+    container.appendChild(footer);
+
+    // Append off-DOM so html2pdf can render it
+    document.body.appendChild(container);
+
+    const opt = {
+        margin:       10,
+        filename:     `submission_${submission.id}_${Date.now()}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    try {
+        await html2pdf().set(opt).from(container).save();
+    } catch (err) {
+        console.error('Error exporting PDF:', err);
+        alert('حدث خطأ أثناء إنشاء ملف PDF. تحقق من الكونسول.');
+    } finally {
+        // Remove temporary container
+        container.remove();
+    }
+}
+
+// expose to global (so inline/other handlers can call it)
+if (typeof window !== 'undefined') {
+    window.exportSubmissionPdf = exportSubmissionPdf;
+}
+
+/**
+ * Send admin notes to user by email and save notes to DB
+ */
+async function sendAdminNotes() {
+    if (!currentSubmissionId) return alert('لا توجد مشاركة محددة للإرسال.');
+    const notesEl = document.getElementById('adminNotesTextarea');
+    if (!notesEl) return alert('حقل ملاحظات الإدارة غير موجود.');
+    const adminNotes = notesEl.value.trim();
+    if (!adminNotes) {
+        return alert('الرجاء إدخال ملاحظات لإرسالها.');
+    }
+
+    const sendBtn = document.getElementById('sendNotesBtn');
+    const originalText = sendBtn ? sendBtn.textContent : null;
+    if (sendBtn) {
+        sendBtn.disabled = true;
+        sendBtn.textContent = 'جارٍ الإرسال...';
+    }
+
+    try {
+        const response = await fetch(`/api/submissions/${currentSubmissionId}/notes`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ adminNotes })
+        });
+
+        // Try to parse JSON but handle non-JSON responses safely
+        let data = null;
+        try {
+            data = await response.json();
+        } catch (e) {
+            // ignore parse errors - data will remain null
+        }
+
+        if (!response.ok) {
+            // Prefer server-provided error message, fall back to statusText
+            const message = (data && (data.error || data.message)) || response.statusText || `HTTP ${response.status}`;
+            throw new Error(message || 'فشل إرسال الملاحظات');
+        }
+
+        // Update local data and UI
+        const idx = allSubmissions.findIndex(s => s.id === currentSubmissionId);
+        if (idx !== -1) {
+            allSubmissions[idx].adminNotes = adminNotes;
+        }
+        updateStats();
+        alert((data && data.message) || 'تم إرسال ملاحظات الإدارة إلى المرسل بنجاح.');
+    } catch (err) {
+        console.error('Error sending admin notes:', err);
+        alert('حدث خطأ أثناء إرسال الملاحظات. تحقق من السجل.');
+    } finally {
+        if (sendBtn) {
+            sendBtn.disabled = false;
+            sendBtn.textContent = originalText || 'إرسال ملاحظات';
+        }
+    }
+}
+
+// Make sure inline onclick="sendAdminNotes(...)" works — expose to global window
+if (typeof window !== 'undefined') {
+    window.sendAdminNotes = sendAdminNotes;
+}
+
+/* Attach send notes button handler once DOM is ready (fixes "sendAdminNotes is not defined") */
+document.addEventListener('DOMContentLoaded', () => {
+    const sendBtn = document.getElementById('sendNotesBtn');
+    if (sendBtn) {
+        // ensure function exists, then bind
+        if (typeof sendAdminNotes === 'function') {
+            sendBtn.addEventListener('click', sendAdminNotes);
+        } else {
+            // fallback: expose simple handler to avoid errors
+            sendBtn.addEventListener('click', () => {
+                console.error('sendAdminNotes is not defined');
+                alert('حدث خطأ: دالة الإرسال غير متاحة الآن.');
+            });
+        }
+    }
+
+    const exportBtn = document.getElementById('exportPdfBtn');
+    if (exportBtn) {
+        if (typeof exportSubmissionPdf === 'function') {
+            exportBtn.addEventListener('click', exportSubmissionPdf);
+        } else {
+            exportBtn.addEventListener('click', () => alert('دالة التصدير غير متاحة الآن.'));
+        }
     }
 });

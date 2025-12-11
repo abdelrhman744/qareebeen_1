@@ -63,9 +63,9 @@
                 <label for="universityFilter">الجامعة:</label>
                 <select id="universityFilter" onchange="filterSubmissions()">
                     <option value="all">جميع الجامعات</option>
-                    <option value="government">جامعة حلوان الحكومية</option>
-                    <option value="private">جامعة حلوان الأهلية</option>
-                    <option value="tech">جامعة حلوان التكنولوجية</option>
+                    <option value="government">جامعة العاصمة الحكومية</option>
+                    <option value="private">جامعة العاصمة الأهلية</option>
+                    <option value="tech">جامعة العاصمة التكنولوجية</option>
                 </select>
             </div>
 
@@ -132,10 +132,15 @@
             <div class="modal-footer">
                 <button class="modal-btn delete-btn" onclick="deleteSubmission()">حذف</button>
                 <button class="modal-btn" onclick="closeModal()">إغلاق</button>
+                <!-- Export PDF button (placed to the right of other buttons) -->
+                <button class="modal-btn" id="exportPdfBtn">تصدير PDF</button>
+                <!-- New send notes button (remove inline onclick) -->
+                <button class="modal-btn" id="sendNotesBtn">إرسال ملاحظات</button>
             </div>
         </div>
     </div>
-
+    <!-- html2pdf (bundled html2canvas + jsPDF) from CDN for client-side PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
     <script src="../js/admin-script.js"></script>
     <script>
         // Initialize on page load

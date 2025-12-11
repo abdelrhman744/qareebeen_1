@@ -11,7 +11,7 @@ let currentSubmissionId = null;
  */
 async function loadSubmissions() {
     try {
-        const response = await fetch('/api/submissions');
+        const response = await fetch('/api/submissions', { credentials: 'include' });
         const submissions = await response.json();
 
         allSubmissions = submissions;
@@ -182,6 +182,7 @@ async function closeModal() {
             try {
                 await fetch(`/api/submissions/${currentSubmissionId}`, {
                     method: 'PUT',
+                    credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -230,7 +231,8 @@ async function deleteSubmission() {
 
     try {
         await fetch(`/api/submissions/${currentSubmissionId}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            credentials: 'include'
         });
 
         closeModal();
@@ -381,5 +383,86 @@ window.addEventListener('click', (e) => {
     const modal = document.getElementById('detailsModal');
     if (e.target === modal) {
         closeModal();
+    }
+});
+
+/**
+ * Send admin notes to user by email and save notes to DB
+ */
+async function sendAdminNotes() {
+    if (!currentSubmissionId) return alert('لا توجد مشاركة محددة للإرسال.');
+    const notesEl = document.getElementById('adminNotesTextarea');
+    if (!notesEl) return alert('حقل ملاحظات الإدارة غير موجود.');
+    const adminNotes = notesEl.value.trim();
+    if (!adminNotes) {
+        return alert('الرجاء إدخال ملاحظات لإرسالها.');
+    }
+
+    const sendBtn = document.getElementById('sendNotesBtn');
+    const originalText = sendBtn ? sendBtn.textContent : null;
+    if (sendBtn) {
+        sendBtn.disabled = true;
+        sendBtn.textContent = 'جارٍ الإرسال...';
+    }
+
+    try {
+        const response = await fetch(`/api/submissions/${currentSubmissionId}/notes`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ adminNotes })
+        });
+
+        // Try to parse JSON but handle non-JSON responses safely
+        let data = null;
+        try {
+            data = await response.json();
+        } catch (e) {
+            // ignore parse errors - data will remain null
+        }
+
+        if (!response.ok) {
+            // Prefer server-provided error message, fall back to statusText
+            const message = (data && (data.error || data.message)) || response.statusText || `HTTP ${response.status}`;
+            throw new Error(message || 'فشل إرسال الملاحظات');
+        }
+
+        // Update local data and UI
+        const idx = allSubmissions.findIndex(s => s.id === currentSubmissionId);
+        if (idx !== -1) {
+            allSubmissions[idx].adminNotes = adminNotes;
+        }
+        updateStats();
+        alert((data && data.message) || 'تم إرسال ملاحظات الإدارة إلى المرسل بنجاح.');
+    } catch (err) {
+        console.error('Error sending admin notes:', err);
+        alert('حدث خطأ أثناء إرسال الملاحظات. تحقق من السجل.');
+    } finally {
+        if (sendBtn) {
+            sendBtn.disabled = false;
+            sendBtn.textContent = originalText || 'إرسال ملاحظات';
+        }
+    }
+}
+
+// Make sure inline onclick="sendAdminNotes(...)" works — expose to global window
+if (typeof window !== 'undefined') {
+    window.sendAdminNotes = sendAdminNotes;
+}
+
+/* Attach send notes button handler once DOM is ready (fixes "sendAdminNotes is not defined") */
+document.addEventListener('DOMContentLoaded', () => {
+    const sendBtn = document.getElementById('sendNotesBtn');
+    if (sendBtn) {
+        // ensure function exists, then bind
+        if (typeof sendAdminNotes === 'function') {
+            sendBtn.addEventListener('click', sendAdminNotes);
+        } else {
+            // fallback: expose simple handler to avoid errors
+            sendBtn.addEventListener('click', () => {
+                console.error('sendAdminNotes is not defined');
+                alert('حدث خطأ: دالة الإرسال غير متاحة الآن.');
+            });
+        }
     }
 });

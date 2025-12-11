@@ -91,11 +91,45 @@ header {
     font-family: 'Amiri', serif;
     font-size: 5rem;
     font-weight: 700;
-    color: white;
-    margin-bottom: 10px;
-    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
+    background: linear-gradient(135deg, #00d4ff 0%, #0099cc 50%, #006699 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2px;
+    margin-top: -30px;
+    text-shadow: none;
     letter-spacing: 2px;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
 }
+
+/* Logo Container with Image */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Logo stacked vertically above text */
+.logo-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0px;
+}
+
+.logo-mark {
+    max-width: 180px;
+    width: 100%;
+    height: auto;
+    background: transparent;
+    display: block;
+    -webkit-user-drag: none;
+    margin-bottom: -20px;
+}
+
+/* (removed image-specific rules) */
 
 /* Subtitle Text */
 .subtitle {
@@ -180,7 +214,7 @@ header {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    border-radius: 80px;
+    border-radius: 100%;
     background-color: #fff;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
@@ -294,7 +328,7 @@ header {
 .university-logo {
     width: 80px;
     height: 80px;
-    border-radius: 40px;
+    border-radius: 100%;
     object-fit: contain;
 }
 
@@ -580,9 +614,12 @@ footer {
 
 /* Pulse Animation */
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(1.05);
     }
@@ -593,38 +630,24 @@ footer {
    ======================================== */
 /* Tablets and Large Phones */
 @media (max-width: 768px) {
+
     /* Reduce Padding */
     .container {
         padding: 25px;
     }
 
-    /* Smaller Logo */
+    /* "Qareebeen" Logo */
     .logo {
-        font-size: 3.5rem;
+        font-family: 'Amiri', serif;
+        font-size: 5rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 10px;
+        text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
+        letter-spacing: 2px;
     }
 
-    /* Smaller Welcome Message */
-    .welcome-message h2 {
-        font-size: 1.5rem;
-    }
-
-    /* Single Column Cards */
-    .university-options {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
-    /* Reduce Card Padding */
-    .university-card {
-        padding: 25px;
-    }
-
-    /* Improve Video Display on Mobile */
-    .video-background {
-        object-fit: cover;
-    }
-
-    /* Form Header Design */
+    /* Subtitle Text */
     .form-header .logo {
         font-size: 2.5rem;
     }
@@ -669,6 +692,7 @@ footer {
 
 /* Small Phones */
 @media (max-width: 480px) {
+
     /* Smaller Logo */
     .logo {
         font-size: 2.5rem;
